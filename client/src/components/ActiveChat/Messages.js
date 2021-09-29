@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
 
+
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
+  const messagesEndRef = useRef(null)
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages]);
+
+  //console.log('messages', messages)
   return (
     <Box>
-      {messages.map((message) => {
+      {[...messages]?.reverse().map((message) => {
         const time = moment(message.createdAt).format("h:mm");
 
         return message.senderId === userId ? (
@@ -17,6 +28,7 @@ const Messages = (props) => {
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
         );
       })}
+      <div ref={messagesEndRef} />
     </Box>
   );
 };

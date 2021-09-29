@@ -17,10 +17,11 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const { postMessage, otherUser, conversationId, user } = props;
+  const { postMessage, otherUser, conversationId, user, reload, setReload } = props;
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -35,6 +36,8 @@ const Input = (props) => {
       conversationId,
       sender: conversationId ? null : user
     };
+    console.log('reqBody: ', reqBody)
+    setReload(!reload);
     await postMessage(reqBody);
     setText("");
   };
