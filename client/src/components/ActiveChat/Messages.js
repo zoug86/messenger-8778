@@ -19,7 +19,7 @@ const Messages = (props) => {
   //console.log('messages', messages)
   return (
     <Box>
-      {[...messages]?.reverse().map((message) => {
+      {messages?.map((message) => {
         const time = moment(message.createdAt).format("h:mm");
 
         return message.senderId === userId ? (
@@ -28,7 +28,7 @@ const Messages = (props) => {
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
         );
       })}
-      <div ref={messagesEndRef} />
+      <Box ref={messagesEndRef} />
     </Box>
   );
 };
