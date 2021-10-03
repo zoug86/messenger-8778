@@ -8,10 +8,16 @@ import {
   Button,
   FormControl,
   TextField,
+  InputAdornment,
+  Link,
 } from "@material-ui/core";
 import { login } from "./store/utils/thunkCreators";
+import bubble from './assets/bubble.svg';
+import globalUseStyles from "./themes/globalUseStyles";
+
 
 const Login = (props) => {
+  const globalClasses = globalUseStyles();
   const history = useHistory();
   const { user, login } = props;
 
@@ -28,39 +34,61 @@ const Login = (props) => {
   }
 
   return (
-    <Grid container justifyContent="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to register?</Typography>
-          <Button onClick={() => history.push("/register")}>Register</Button>
+    <Grid container className={globalClasses.root}>
+      < Box component={Grid} className={globalClasses.imageContainer} sm={6} md={5} lg={4}>
+        <img src={bubble} className={globalClasses.bubble} />
+        <Typography className={globalClasses.overlayText}>
+          Converse with anyone with any language
+        </Typography>
+      </Box>
+      <Box component={Grid} className={globalClasses.login} sm={6} md={7} lg={8}>
+        <Grid container item className={globalClasses.header}>
+          <Typography className={globalClasses.text}>Don't have an accoount?</Typography>
+          <Button className={globalClasses.headerBtn} onClick={() => history.push("/register")} xs={6}>Create account</Button>
         </Grid>
-        <form onSubmit={handleLogin}>
-          <Grid>
-            <Grid>
-              <FormControl margin="normal" required>
+        <Box className={globalClasses.loginBody}>
+          <Grid container item className={globalClasses.welcomeMsg}>
+            <Typography className={globalClasses.welcome}>Welcome back!</Typography>
+          </Grid>
+          <form onSubmit={handleLogin} className={globalClasses.form}>
+            < Grid className={globalClasses.inputGrid}>
+              <FormControl margin="normal" fullWidth className={globalClasses.inputControl}>
                 <TextField
                   aria-label="username"
                   label="Username"
                   name="username"
                   type="text"
+                  variant="standard"
+                  required
+                >
+                </TextField>
+              </FormControl>
+              <FormControl margin="normal" fullWidth required className={globalClasses.inputControl}>
+                <TextField
+                  label="Password"
+                  aria-label="password"
+                  type="password"
+                  name="password"
+                  variant="standard"
+                  required
+                  InputProps={{
+                    endAdornment: <InputAdornment position="start">
+                      <Link to="/" className={globalClasses.forgot}>
+                        Forgot?
+                      </Link>
+                    </InputAdornment>,
+                  }}
                 />
               </FormControl>
+              <Grid>
+                <Button type="submit" variant="contained" size="large" className={globalClasses.loginBtn}>
+                  Login
+                </Button>
+              </Grid>
             </Grid>
-            <FormControl margin="normal" required>
-              <TextField
-                label="password"
-                aria-label="password"
-                type="password"
-                name="password"
-              />
-            </FormControl>
-            <Grid>
-              <Button type="submit" variant="contained" size="large">
-                Login
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
+          </form>
+        </Box>
+
       </Box>
     </Grid>
   );
