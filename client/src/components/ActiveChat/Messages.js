@@ -16,7 +16,6 @@ const Messages = (props) => {
     scrollToBottom()
   }, [messages]);
 
-  //console.log('messages', messages)
   return (
     <Box>
       {messages?.map((message) => {
