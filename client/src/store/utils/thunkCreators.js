@@ -9,8 +9,12 @@ import {
 import { gotUser, setFetchingStatus } from "../user";
 
 axios.interceptors.request.use(async function (config) {
-  const token = await localStorage.getItem("messenger-token");
-  config.headers["x-access-token"] = token;
+  console.log('Config: ', config.url)
+  if (!config.url.includes('cloudinary')) {
+    const token = await localStorage.getItem("messenger-token");
+    config.headers["x-access-token"] = token;
+  }
+
 
   return config;
 });

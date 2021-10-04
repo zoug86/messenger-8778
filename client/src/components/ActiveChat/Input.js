@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { FormControl, FilledInput } from "@material-ui/core";
+import { FormControl, FilledInput, InputAdornment, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage, fetchConversations } from "../../store/utils/thunkCreators";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import axios from 'axios';
+//import Uploady from "@rpldy/uploady";
 
-
+const CLOUD_NAME = "dwuo25yqj",
+  UPLOAD_PRESET = "messenger";
 const useStyles = makeStyles(() => ({
   root: {
     justifySelf: "flex-end",
@@ -22,11 +26,31 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const { postMessage, fetchConversations, otherUser, conversationId, user } = props;
+  const [url, setUrl] = useState("");
+
+  const { postMessage, otherUser, conversationId, user } = props;
 
   const handleChange = (event) => {
     setText(event.target.value);
-  };
+  }
+
+
+  const handleImageChange = (e) => {
+    //setImages(e.target.files[0])
+    const file = e.target.files[0]
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "messenger"); // Replace the preset name with your own
+
+    // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
+    axios.post("https://api.cloudinary.com/v1_1/dwuo25yqj/upload", formData
+    ).then(response => {
+      const data = response.data;
+      const fileURL = data.secure_url // You should store this URL for future references in your app
+      setUrl(fileURL);
+      console.log(data);
+    })
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,10 +59,11 @@ const Input = (props) => {
       text: event.target.text.value,
       recipientId: otherUser.id,
       conversationId,
+      attachments: [url],
       sender: conversationId ? null : user
     };
     await postMessage(reqBody);
-    await fetchConversations();
+    //await fetchConversations();
     setText("");
   };
 
@@ -52,6 +77,23 @@ const Input = (props) => {
           value={text}
           name="text"
           onChange={handleChange}
+          endAdornment={<InputAdornment position="end">
+            <input
+              accept="image/*"
+              className={classes.input}
+              // style={{ display: 'none' }}
+              id="raised-button-file"
+              multiple
+              type="file"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="raised-button-file">
+              <Button variant="raised" component="span" className={classes.button}>
+                <ContentCopyIcon />
+              </Button>
+            </label>
+
+          </InputAdornment>}
         />
       </FormControl>
     </form>
@@ -62,9 +104,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     postMessage: (message) => {
       dispatch(postMessage(message));
-    },
-    fetchConversations: () => {
-      dispatch(fetchConversations());
     }
   };
 };
