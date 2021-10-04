@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
 
+
 const useStyles = makeStyles(() => ({
   root: {
     justifySelf: "flex-end",
@@ -16,6 +17,7 @@ const useStyles = makeStyles(() => ({
     marginBottom: 20
   }
 }));
+
 
 const Input = (props) => {
   const classes = useStyles();
@@ -59,7 +61,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     postMessage: (message) => {
       dispatch(postMessage(message));
-    },
+    }
   };
 };
 

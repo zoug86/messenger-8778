@@ -3,12 +3,16 @@ const express = require("express");
 const { join } = require("path");
 const logger = require("morgan");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db");
 const { User } = require("./db/models");
 // create store for sessions to persist in database
 const sessionStore = new SequelizeStore({ db });
+
+// Load env variables
+dotenv.config();
 
 const { json, urlencoded } = express;
 
