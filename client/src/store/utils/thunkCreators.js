@@ -9,7 +9,6 @@ import {
 import { gotUser, setFetchingStatus } from "../user";
 
 axios.interceptors.request.use(async function (config) {
-  console.log('Config: ', config.url)
   if (!config.url.includes('cloudinary')) {
     const token = await localStorage.getItem("messenger-token");
     config.headers["x-access-token"] = token;
