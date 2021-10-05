@@ -10,7 +10,7 @@ import globalUseStyles from "../themes/globalUseStyles";
 const AuthForm = (props) => {
     const globalClasses = globalUseStyles();
     const history = useHistory();
-    const { user, login, inputTypes, loginPage } = props;
+    const { user, login, register, inputTypes, loginPage } = props;
     const [formErrorMessage, setFormErrorMessage] = useState({});
 
     const handleLogin = async (event) => {
@@ -43,7 +43,7 @@ const AuthForm = (props) => {
     return (
         <Grid container className={globalClasses.root}>
             < Box component={Grid} className={globalClasses.imageContainer} sm={6} md={5} lg={4}>
-                <img src={bubble} className={globalClasses.bubble} />
+                <img src={bubble} className={globalClasses.bubble} alt="bg-img" />
                 <Typography className={globalClasses.overlayText}>
                     Converse with anyone with any language
                 </Typography>
@@ -62,7 +62,8 @@ const AuthForm = (props) => {
                     <form onSubmit={loginPage ? handleLogin : handleRegister} className={globalClasses.form}>
                         < Grid className={globalClasses.inputGrid}>
                             {inputTypes.map(input => (
-                                <FormControl margin="normal" fullWidth className={globalClasses.inputControl} error={input === "Confirm Password" || "Password" ? !!formErrorMessage.confirmPassword : ''}>
+                                <FormControl margin="normal" fullWidth className={globalClasses.inputControl}
+                                    error={input === "Confirm Password" ? !!formErrorMessage.confirmPassword : input === "Password" ? !!formErrorMessage.confirmPassword : null}>
                                     <TextField
                                         aria-label={input}
                                         label={input}
@@ -72,6 +73,13 @@ const AuthForm = (props) => {
                                         inputProps={input === "Password" ? { minLength: 6 } : input === "Confirm Password" ? { minLength: 6 } : ''}
                                         variant="standard"
                                         required
+                                        InputProps={loginPage && input === "Password" && {
+                                            endAdornment: <InputAdornment position="start">
+                                                <Link to="/" className={globalClasses.forgot}>
+                                                    Forgot?
+                                                </Link>
+                                            </InputAdornment>,
+                                        }}
                                     />
                                     {input === "Confirm Password" &&
                                         <FormHelperText>
@@ -83,24 +91,6 @@ const AuthForm = (props) => {
                                         </FormHelperText>}
                                 </FormControl>
                             ))}
-
-                            {/* <FormControl margin="normal" fullWidth required className={globalClasses.inputControl}>
-                                <TextField
-                                    label="Password"
-                                    aria-label="password"
-                                    type="password"
-                                    name="password"
-                                    variant="standard"
-                                    required
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="start">
-                                            <Link to="/" className={globalClasses.forgot}>
-                                                Forgot?
-                                            </Link>
-                                        </InputAdornment>,
-                                    }}
-                                />
-                            </FormControl> */}
                             <Grid>
                                 <Button type="submit" variant="contained" size="large" className={globalClasses.loginBtn}>
                                     {loginPage ? "Login" : "Create"}

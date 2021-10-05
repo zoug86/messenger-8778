@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import bgImage from '../assets/bg-img.png';
 
-const globalUseStyles = makeStyles(() => ({
+const globalUseStyles = makeStyles((theme) => ({
     root: {
         height: "100vh",
         fontFamily: "Montserrat",
@@ -48,7 +48,7 @@ const globalUseStyles = makeStyles(() => ({
         },
     },
     headerBtn: {
-        color: "#3A8DFF",
+        color: theme.palette.primary.main,
         boxShadow: "0 1px 6px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.05)",
         padding: "15px 30px",
         marginLeft: "30px",
@@ -58,7 +58,7 @@ const globalUseStyles = makeStyles(() => ({
         },
     },
     text: {
-        color: "lightgrey"
+        color: theme.palette.secondary.main
     },
     loginBody: {
         width: "80%",
@@ -95,6 +95,9 @@ const globalUseStyles = makeStyles(() => ({
     inputControl: {
         width: "100%",
         padding: "10px",
+        letterSpacing: theme.overrides.MuiInput.input.letterSpacing,
+        height: theme.overrides.MuiInput.input.height,
+        fontSize: theme.overrides.MuiInput.input.fontSize,
         '@media (max-width:550px)': {
             padding: "0",
         },
@@ -102,7 +105,7 @@ const globalUseStyles = makeStyles(() => ({
     loginBtn: {
         padding: "15px 50px",
         marginTop: "40%",
-        backgroundColor: "#3A8DFF",
+        backgroundColor: theme.palette.primary.main,
         color: "#fff",
         fontFamily: "Montserrat",
         fontSize: "16px",
