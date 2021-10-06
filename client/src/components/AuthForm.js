@@ -57,7 +57,7 @@ const AuthForm = (props) => {
                 </Grid>
                 <Box className={globalClasses.loginBody}>
                     <Grid container item className={globalClasses.welcomeMsg}>
-                        <Typography className={globalClasses.welcome}> {loginPage ? "Welcome back!" : "Create an account"}</Typography>
+                        <Typography className={globalClasses.welcome}> {loginPage ? "Welcome back!" : "Create an account."}</Typography>
                     </Grid>
                     <form onSubmit={loginPage ? handleLogin : handleRegister} className={globalClasses.form}>
                         < Grid className={globalClasses.inputGrid}>
@@ -72,7 +72,7 @@ const AuthForm = (props) => {
                                             input === "Email Address" ? "email" : "password"}
                                         inputProps={input === "Password" ? { minLength: 6 } : input === "Confirm Password" ? { minLength: 6 } : ''}
                                         variant="standard"
-                                        required
+
                                         InputProps={loginPage && input === "Password" && {
                                             endAdornment: <InputAdornment position="start">
                                                 <Link to="/" className={globalClasses.forgot}>

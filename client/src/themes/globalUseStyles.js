@@ -5,6 +5,7 @@ const globalUseStyles = makeStyles((theme) => ({
     root: {
         height: "100vh",
         fontFamily: "Montserrat",
+
     },
     imageContainer: {
         backgroundImage: `linear-gradient(to bottom, rgba(58, 141, 255, 0.85), rgba(134, 185, 255, 0.85)), url(${bgImage})`,
@@ -27,6 +28,7 @@ const globalUseStyles = makeStyles((theme) => ({
     bubble: {
         marginTop: "50%",
         marginBottom: "8%",
+        width: "120px",
         '@media (max-width:600px)': {
             marginTop: "20%",
         },
@@ -49,8 +51,8 @@ const globalUseStyles = makeStyles((theme) => ({
     },
     headerBtn: {
         color: theme.palette.primary.main,
-        boxShadow: "0 1px 6px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.05)",
-        padding: "15px 30px",
+        boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.1), 0px 3px 10px rgba(0, 0, 0, 0.1)",
+        padding: "15px 50px",
         marginLeft: "30px",
         '@media (max-width:550px)': {
             marginLeft: "15px",
@@ -76,7 +78,7 @@ const globalUseStyles = makeStyles((theme) => ({
         },
     },
     welcome: {
-        fontSize: "25px",
+        fontSize: "30px",
     },
     form: {
         width: "100%",
@@ -94,16 +96,18 @@ const globalUseStyles = makeStyles((theme) => ({
     },
     inputControl: {
         width: "100%",
-        padding: "10px",
+        padding: "20px",
         letterSpacing: theme.overrides.MuiInput.input.letterSpacing,
-        height: theme.overrides.MuiInput.input.height,
-        fontSize: theme.overrides.MuiInput.input.fontSize,
+        "& .MuiFormLabel-root": {
+            fontSize: "22px",
+            top: "-12px"
+        },
         '@media (max-width:550px)': {
             padding: "0",
         },
     },
     loginBtn: {
-        padding: "15px 50px",
+        padding: "15px 70px",
         marginTop: "40%",
         backgroundColor: theme.palette.primary.main,
         color: "#fff",

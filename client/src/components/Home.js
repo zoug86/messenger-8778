@@ -32,7 +32,6 @@ const Home = (props) => {
 
   useEffect(() => {
     gotConversations(conversations)
-    //console.log('conversation is: ', conversation);
   }, [conversations]);
 
 
