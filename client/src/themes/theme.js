@@ -2,7 +2,7 @@ import { createTheme } from "@material-ui/core";
 
 export const theme = createTheme({
   typography: {
-    fontFamily: "Open Sans, sans-serif",
+    fontFamily: "OpenSans, sans-serif",
     fontSize: 14,
     button: {
       textTransform: "none",
@@ -13,9 +13,12 @@ export const theme = createTheme({
   overrides: {
     MuiInput: {
       input: {
-        fontWeight: "bold"
+        fontWeight: "bold",
+        fontSize: "20px",
+        letterSpacing: "2px",
+        height: "30px"
       }
-    }
+    },
   },
   palette: {
     primary: { main: "#3A8DFF" },
