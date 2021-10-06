@@ -23,16 +23,26 @@ const useStyles = makeStyles(() => ({
   },
   bubble: {
     background: "#F4F6FA",
-    borderRadius: "10px 10px 0 10px"
+    borderRadius: "10px 10px 0 10px",
+  },
+  image: {
+    marginRight: "10px",
+    borderRadius: "10px"
   }
 }));
 
 const SenderBubble = (props) => {
   const classes = useStyles();
-  const { time, text } = props;
+  const { time, text, attachments } = props;
   return (
     <Box className={classes.root}>
+
       <Typography className={classes.date}>{time}</Typography>
+      <Box>
+        {attachments?.map(attachment => (
+          <img src={attachment} width={300} height={250} className={classes.image} alt="user_img" />
+        ))}
+      </Box>
       <Box className={classes.bubble}>
         <Typography className={classes.text}>{text}</Typography>
       </Box>

@@ -20,7 +20,8 @@ const useStyles = makeStyles(() => ({
   },
   bubble: {
     backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
-    borderRadius: "0 10px 10px 10px"
+    borderRadius: "0 10px 10px 10px",
+    width: "max-content"
   },
   text: {
     fontSize: 14,
@@ -28,21 +29,34 @@ const useStyles = makeStyles(() => ({
     color: "#FFFFFF",
     letterSpacing: -0.2,
     padding: 8
+  },
+  image: {
+    marginRight: "10px",
+    borderRadius: "10px"
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
   }
 }));
 
 const OtherUserBubble = (props) => {
   const classes = useStyles();
-  const { text, time, otherUser } = props;
+  const { text, time, otherUser, attachments } = props;
   return (
     <Box className={classes.root}>
       <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
-      <Box>
+      <Box className={classes.container}>
         <Typography className={classes.usernameDate}>
           {otherUser.username} {time}
         </Typography>
+        <Box>
+          {attachments?.map(attachment => (
+            <img src={attachment} width={300} height={250} className={classes.image} alt='other_img' />
+          ))}
+        </Box>
         <Box className={classes.bubble}>
-          <Typography className={classes.text}>{text}</Typography>
+          {text ? <Typography className={classes.text}>{text}</Typography> : null}
         </Box>
       </Box>
     </Box>

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormControl, FilledInput, InputAdornment, Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { postMessage } from "../../store/utils/thunkCreators";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import axios from 'axios';
-//import Uploady from "@rpldy/uploady";
 
 
 const useStyles = makeStyles(() => ({
@@ -29,6 +28,10 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       color: "grey",
     },
+  },
+  imgName: {
+    marginLeft: "10px",
+    marginRight: "10px",
   }
 }));
 
@@ -37,7 +40,7 @@ const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
   const [urls, setUrls] = useState([]);
-  const [photos, setPhotos] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const { postMessage, otherUser, conversationId, user } = props;
 
@@ -45,26 +48,25 @@ const Input = (props) => {
     setText(event.target.value);
   }
 
-
   const handleImageChange = (e) => {
-
-    const files = e.target.files[1];
-    console.log(files)
-    // files.map((file) => {
-    //   setPhotos([...photos, file]);
-    //   const formData = new FormData();
-    //   formData.append("file", file);
-    //   formData.append("upload_preset", "messenger");
-    //   axios.post(`https://api.cloudinary.com/v1_1/dwuo25yqj/upload`, formData
-    //   ).then(response => {
-    //     const data = response.data;
-    //     console.log(data)
-    //     const fileURL = data.secure_url
-    //     setUrls([...urls, fileURL]);
-    //   })
-    // })
-
+    const newFiles = e.target.files;
+    setFiles([...newFiles]);
   }
+  let links = [];
+  useEffect(() => {
+    files.map((file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "messenger");
+      return axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`, formData
+      ).then(response => {
+        const data = response.data;
+        const fileURL = data.secure_url
+        links.push(fileURL)
+      })
+    })
+    setUrls(links);
+  }, [files])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,8 +79,9 @@ const Input = (props) => {
       sender: conversationId ? null : user
     };
     await postMessage(reqBody);
-    //await fetchConversations();
     setText("");
+    setFiles([])
+    setUrls([])
   };
 
   return (
@@ -102,15 +105,13 @@ const Input = (props) => {
               onChange={handleImageChange}
             />
             <label htmlFor="raised-button-file">
-              <Button variant="raised" component="span" className={classes.uploadBtn}>
-                {photos?.map(photo => (
-                  <Typography> {photo.name} </Typography >
+              <Button component="span" className={classes.uploadBtn}>
+                {files?.map((file, i) => (
+                  <Typography key={i} className={classes.imgName}> {file.name} </Typography >
                 ))}
-
                 <ContentCopyIcon className={classes.upload} />
               </Button>
             </label>
-
           </InputAdornment>}
         />
       </FormControl>
