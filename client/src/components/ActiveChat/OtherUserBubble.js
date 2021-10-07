@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography, Avatar } from "@material-ui/core";
+import { Box, Avatar } from "@material-ui/core";
+import Poster from "../Poster";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -12,32 +13,7 @@ const useStyles = makeStyles(() => ({
     marginRight: 11,
     marginTop: 6
   },
-  usernameDate: {
-    fontSize: 11,
-    color: "#BECCE2",
-    fontWeight: "bold",
-    marginBottom: 5
-  },
-  bubble: {
-    backgroundImage: "linear-gradient(225deg, #6CC1FF 0%, #3A8DFF 100%)",
-    borderRadius: "0 10px 10px 10px",
-    width: "max-content"
-  },
-  text: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    letterSpacing: -0.2,
-    padding: 8
-  },
-  image: {
-    marginRight: "10px",
-    borderRadius: "10px"
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-  }
+
 }));
 
 const OtherUserBubble = (props) => {
@@ -46,19 +22,7 @@ const OtherUserBubble = (props) => {
   return (
     <Box className={classes.root}>
       <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
-      <Box className={classes.container}>
-        <Typography className={classes.usernameDate}>
-          {otherUser.username} {time}
-        </Typography>
-        <Box>
-          {attachments?.map(attachment => (
-            <img src={attachment} width={300} height={250} className={classes.image} alt='other_img' />
-          ))}
-        </Box>
-        <Box className={classes.bubble}>
-          {text ? <Typography className={classes.text}>{text}</Typography> : null}
-        </Box>
-      </Box>
+      <Poster text={text} attachments={attachments} time={time} other={true} />
     </Box>
   );
 };

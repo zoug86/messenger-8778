@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FormControl, FilledInput, InputAdornment, Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { postMessage } from "../../store/utils/thunkCreators";
+import { postMessage, imageUpload } from "../../store/utils/thunkCreators";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import axios from 'axios';
-
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -48,24 +46,20 @@ const Input = (props) => {
     setText(event.target.value);
   }
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const newFiles = e.target.files;
     setFiles([...newFiles]);
   }
-  let links = [];
+
   useEffect(() => {
-    files.map((file) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "messenger");
-      return axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`, formData
-      ).then(response => {
-        const data = response.data;
-        const fileURL = data.secure_url
-        links.push(fileURL)
-      })
-    })
-    setUrls(links);
+    const handleUpload = async () => {
+      const response = await imageUpload(files);
+      const newUrls = response[0].map(url => url.secure_url)
+      setUrls(newUrls);
+    }
+    if (files.length !== 0) {
+      handleUpload();
+    }
   }, [files])
 
   const handleSubmit = async (event) => {
@@ -75,7 +69,7 @@ const Input = (props) => {
       text: event.target.text.value,
       recipientId: otherUser.id,
       conversationId,
-      attachments: [...urls],
+      attachments: urls,
       sender: conversationId ? null : user
     };
     await postMessage(reqBody);
