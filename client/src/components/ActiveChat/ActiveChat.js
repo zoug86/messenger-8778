@@ -24,6 +24,8 @@ const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
   const conversation = props.conversation || {};
+
+
   return (
     <Box className={classes.root}>
       {conversation.otherUser && (
@@ -60,5 +62,6 @@ const mapStateToProps = (state) => {
       )
   };
 };
+
 
 export default connect(mapStateToProps, null)(ActiveChat);

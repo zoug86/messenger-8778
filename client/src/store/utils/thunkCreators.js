@@ -84,6 +84,7 @@ export const fetchConversations = () => async (dispatch) => {
 
 const saveMessage = async (body) => {
   const { data } = await axios.post("/api/messages", body);
+
   return data;
 };
 
@@ -105,7 +106,6 @@ export const postMessage = (body) => async (dispatch) => {
     } else {
       dispatch(setNewMessage(data.message));
     }
-
     sendMessage(data, body);
   } catch (error) {
     console.error(error);
@@ -115,7 +115,6 @@ export const postMessage = (body) => async (dispatch) => {
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/api/users/${searchTerm}`);
-    dispatch(setSearchedUsers(data));
   } catch (error) {
     console.error(error);
   }

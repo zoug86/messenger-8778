@@ -7,6 +7,7 @@ import { SidebarContainer } from "./Sidebar";
 import { ActiveChat } from "./ActiveChat";
 import { logout, fetchConversations } from "../store/utils/thunkCreators";
 import { clearOnLogout } from "../store/index";
+import { gotConversations } from "../store/conversations";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
-  const { user, logout, fetchConversations } = props;
+  const { conversations, user, logout, fetchConversations } = props;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -28,6 +29,11 @@ const Home = (props) => {
   useEffect(() => {
     fetchConversations();
   }, [fetchConversations]);
+
+  useEffect(() => {
+    gotConversations(conversations)
+  }, [conversations]);
+
 
   if (!user.id) {
     // If we were previously logged in, redirect to login instead of register
@@ -69,7 +75,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     fetchConversations: () => {
       dispatch(fetchConversations());
-    }
+    },
+    gotConversations: (conversations) => {
+      dispatch(gotConversations(conversations));
+    },
+
   };
 };
 
