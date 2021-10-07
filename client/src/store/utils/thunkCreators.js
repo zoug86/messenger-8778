@@ -9,8 +9,11 @@ import {
 import { gotUser, setFetchingStatus } from "../user";
 
 axios.interceptors.request.use(async function (config) {
-  const token = await localStorage.getItem("messenger-token");
-  config.headers["x-access-token"] = token;
+  if (!config.url.includes('cloudinary')) {
+    const token = await localStorage.getItem("messenger-token");
+    config.headers["x-access-token"] = token;
+  }
+
 
   return config;
 });
@@ -116,3 +119,24 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
+
+// Image upload 
+const saveImage = async (body) => {
+  const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/upload`, body);
+  return data;
+};
+
+export const imageUpload = async (files) => {
+  try {
+    const photos = Promise.all(files.map(async (file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "messenger");
+      return await saveImage(formData);
+    }));
+    return await Promise.all([photos]);
+  } catch (err) {
+    console.log(err.stack);
+  }
+
+}
